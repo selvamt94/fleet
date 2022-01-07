@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: neuvector-enforcer-pod
+  namespace: neuvector
+spec:
+  selector:
+    matchLabels:
+      app: neuvector-enforcer-pod
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: neuvector-enforcer-pod
+    spec:
+      imagePullSecrets:
+        - name: regsecret-gcp
+      hostPID: true
+      containers:
+        - name: neuvector-enforcer-pod
+          #image: 10.1.127.3:5000/neuvector/enforcer:latest
+          image: registry.neuvector.com/enforcer:4.4.2
+          imagePullPolicy: Always
+          securityContext:
+            privileged: true
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.neuvector
+            - name: CLUSTER_ADVERTISED_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_BIND_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CTRL_PATH_DEBUG
+              value: "1"
+          volumeMounts:
+            - mountPath: /var/neuvector
+              name: nv-share
+              readOnly: false
+            - mountPath: /var/run/docker.sock
+              name: docker-sock
+              readOnly: false
+            - mountPath: /host/proc
+              name: proc-vol
+              readOnly: true
+            - mountPath: /host/cgroup
+              name: cgroup-vol
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: nv-share
+          hostPath:
+            path: /home/neuvector/var/neuvector
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+        - name: proc-vol
+          hostPath:
+            path: /proc
+        - name: cgroup-vol
+          hostPath:
+            path: /sys/fs/cgroup
+
