@@ -5,9 +5,3 @@ daemonset.yaml
 cronjob.yaml
 # Overlay files
 
-# The following file we be added
-overlays/custom/configmap.yaml
-# The following file will replace svc.yaml
-overlays/custom/svc.yaml
-# The following file will patch deployment.yaml
-overlays/custom/deployment_patch.yaml
