@@ -21,7 +21,7 @@ controller:
       maxUnavailable: 0
   image:
     repository: neuvector/controller
-  replicas: 3
+  replicas: 1
   disruptionbudget: 0
   schedulerName:
   priorityClassName:
@@ -152,7 +152,7 @@ controller:
 
 enforcer:
   # If false, enforcer will not be installed
-  enabled: true
+  enabled: false
   image:
     repository: neuvector/enforcer
   priorityClassName:
@@ -229,7 +229,7 @@ cve:
     priorityClassName:
   scanner:
     enabled: true
-    replicas: 3
+    replicas: 1
     dockerPath: ""
     strategy:
       type: RollingUpdate
