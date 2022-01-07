@@ -6,7 +6,7 @@ helm:
   releaseName: neuvector
 
   # The directory of the chart in the repo.
-  chart: "https://github.com/neuvector/neuvector-helm/charts/core"
+  chart: "https://github.com/neuvector/neuvector-helm/tree/master/charts/core"
 
   # An https to a valid Helm repository to download the chart from
 #  repo: "https://neuvector.github.io/neuvector-helm/"
