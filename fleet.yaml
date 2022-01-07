@@ -1,7 +1,0 @@
-# Base files
-deployment.yaml
-svc.yaml
-daemonset.yaml
-cronjob.yaml
-# Overlay files
-
