@@ -5,3 +5,7 @@
 
 serviceAccount: default
 
+crdwebhook:
+  enabled: true
+  type: ClusterIP
+
