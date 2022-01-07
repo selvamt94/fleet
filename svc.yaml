@@ -9,7 +9,7 @@ spec:
   - port: 11443
     name: fed
     protocol: TCP
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: neuvector-controller-pod
 
@@ -25,7 +25,7 @@ spec:
   - port: 10443
     name: fed
     protocol: TCP
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: neuvector-controller-pod
 
