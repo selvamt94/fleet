@@ -1,4 +1,4 @@
-namespace: neuvector
+defaultNamespace: neuvector
 
 # Custom helm options
 helm:
