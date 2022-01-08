@@ -6,9 +6,10 @@ helm:
   releaseName: neuvector
 
   # The directory of the chart in the repo.
-  chart: "github.com/twingao/httpbin"
+  chart: "github.com/neuvector/neuvector-helm"
 
   # An https to a valid Helm repository to download the chart from
+  repo: ""
 #  repo: "https://neuvector.github.io/neuvector-helm/"
 
   # Used if repo is set to look up the version of the chart
