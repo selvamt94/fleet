@@ -1,0 +1,9 @@
+controller:
+  # If false, controller will not be installed
+  replicas: 1
+enforcer:
+  # If false, enforcer will not be installed
+  enabled: false
+cve:
+  scanner:
+    replicas: 1

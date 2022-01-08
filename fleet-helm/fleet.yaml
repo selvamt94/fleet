@@ -25,3 +25,5 @@ helm:
   # Custom values that will be passed as values.yaml to the installation
   values:
     imagePullSecrets: regsecret-gcp
+  valuesFiles:
+    - values1.yaml
