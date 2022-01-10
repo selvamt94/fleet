@@ -9,14 +9,6 @@ targetCustomizations:
     # Refers to overlays/noreplication folder
     - noreplication
 
-- name: test
-  clusterSelector:
-    matchLabels:
-      env: test
-  yaml:
-    overlays:
-    # Refers to overlays/scale3 folder
-    - scale1
 
 - name: prod
   clusterSelector:
