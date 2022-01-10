@@ -4,7 +4,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: neuvector-svc-admission-webhook
-  namespace: default
+  namespace:
   labels:
     chart: core-1.8.8
     release: nv

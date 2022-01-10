@@ -4,7 +4,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: neuvector-scanner-pod
-  namespace: default
+  namespace:
   labels:
     chart: core-1.8.8
     heritage: Helm
