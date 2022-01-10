@@ -1,15 +1,4 @@
 defaultNamespace: neuvector
-targetCustomizations:
-- name: test
-  clusterSelector:
-    matchLabels:
-      env: test
-  yaml:
-    overlays:
-    # Refers to overlays/noreplication folder
-    - scale1
-
-
 - name: prod
   clusterSelector:
     matchLabels:
