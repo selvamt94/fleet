@@ -1,4 +1,4 @@
-defaultNamespace: neuvector
+namespace: neuvector
 targetCustomizations:
 - name: dev
   clusterSelector:
