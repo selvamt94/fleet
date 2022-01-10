@@ -1,0 +1,39 @@
+---
+# Source: core/templates/manager-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-manager-pod
+  namespace: default
+  labels:
+    chart: core-1.8.8
+    release: nv
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neuvector-manager-pod
+  template:
+    metadata:
+      labels:
+        app: neuvector-manager-pod
+        release: nv
+    spec:
+      imagePullSecrets:
+        - name: regsecret-gcp
+      serviceAccountName: default
+      serviceAccount: default
+      containers:
+        - name: neuvector-manager-pod
+          
+          
+          image: "registry.neuvector.com/manager:4.4.2"
+          env:
+            - name: CTRL_SERVER_IP
+              value: neuvector-svc-controller.default
+          volumeMounts:
+          resources:
+            {}
+      restartPolicy: Always
+      volumes:

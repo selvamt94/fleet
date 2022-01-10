@@ -1,0 +1,20 @@
+---
+# Source: core/templates/admission-webhook-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-svc-admission-webhook
+  namespace: default
+  labels:
+    chart: core-1.8.8
+    release: nv
+    heritage: Helm
+spec:
+  ports:
+    - port: 443
+      targetPort: 20443
+      protocol: TCP
+      name: admission-webhook
+  type: ClusterIP
+  selector:
+    app: neuvector-controller-pod

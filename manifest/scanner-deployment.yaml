@@ -1,0 +1,42 @@
+---
+# Source: core/templates/scanner-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuvector-scanner-pod
+  namespace: default
+  labels:
+    chart: core-1.8.8
+    heritage: Helm
+    release: nv
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  replicas: 3
+  selector:
+    matchLabels:
+      app: neuvector-scanner-pod
+  template:
+    metadata:
+      labels:
+        app: neuvector-scanner-pod
+    spec:
+      imagePullSecrets:
+        - name: regsecret-gcp
+      serviceAccountName: default
+      serviceAccount: default
+      containers:
+        - name: neuvector-scanner-pod
+          
+          
+          image: "registry.neuvector.com/scanner:latest"
+          imagePullPolicy: Always
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.default
+          resources:
+            {}
+      restartPolicy: Always

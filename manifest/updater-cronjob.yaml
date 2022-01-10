@@ -1,0 +1,42 @@
+---
+# Source: core/templates/updater-cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: neuvector-updater-pod
+  namespace: default
+  labels:
+    chart: core-1.8.8
+    release: nv
+    heritage: Helm
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: neuvector-updater-pod
+            release: nv
+        spec:
+          imagePullSecrets:
+            - name: regsecret-gcp
+          serviceAccountName: default
+          serviceAccount: default
+          containers:
+            - name: neuvector-updater-pod
+              
+              
+              image: "registry.neuvector.com/updater:latest"
+              imagePullPolicy: Always
+              lifecycle:
+                postStart:
+                  exec:
+                    command:
+                    - /bin/sh
+                    - -c
+                    - /usr/bin/curl -kv -X PATCH -H "Authorization:Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" -H "Content-Type:application/strategic-merge-patch+json" -d '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'`date +%Y-%m-%dT%H:%M:%S%z`'"}}}}}' 'https://kubernetes.default/apis/apps/v1/namespaces/default/deployments/neuvector-scanner-pod'
+              env:
+                - name: CLUSTER_JOIN_ADDR
+                  value: neuvector-svc-controller.default
+          restartPolicy: Never

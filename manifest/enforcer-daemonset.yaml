@@ -1,0 +1,79 @@
+---
+# Source: core/templates/enforcer-daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: neuvector-enforcer-pod
+  namespace: default
+  labels:
+    chart: core-1.8.8
+    heritage: Helm
+    release: nv
+spec:
+  updateStrategy:
+    type: RollingUpdate  
+  selector:
+    matchLabels:
+      app: neuvector-enforcer-pod
+  template:
+    metadata:
+      labels:
+        app: neuvector-enforcer-pod
+        release: nv
+    spec:
+      imagePullSecrets:
+        - name: regsecret-gcp
+      tolerations:
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+      hostPID: true
+      serviceAccountName: default
+      serviceAccount: default
+      containers:
+        - name: neuvector-enforcer-pod
+          
+          
+          image: "registry.neuvector.com/enforcer:4.4.2"
+          securityContext:
+            privileged: true
+          resources:
+            {}
+          env:
+            - name: CLUSTER_JOIN_ADDR
+              value: neuvector-svc-controller.default
+            - name: CLUSTER_ADVERTISED_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CLUSTER_BIND_ADDR
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: runtime-sock
+              readOnly: true
+            - mountPath: /host/proc
+              name: proc-vol
+              readOnly: true
+            - mountPath: /host/cgroup
+              name: cgroup-vol
+              readOnly: true
+            - mountPath: /lib/modules
+              name: modules-vol
+              readOnly: true
+      terminationGracePeriodSeconds: 1200
+      restartPolicy: Always
+      volumes:
+        - name: runtime-sock
+          hostPath:
+            path: /var/run/docker.sock
+        - name: proc-vol
+          hostPath:
+            path: /proc
+        - name: cgroup-vol
+          hostPath:
+            path: /sys/fs/cgroup
+        - name: modules-vol
+          hostPath:
+            path: /lib/modules

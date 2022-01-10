@@ -1,0 +1,19 @@
+---
+# Source: core/templates/manager-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: neuvector-service-webui
+  namespace: default
+  labels:
+    chart: core-1.8.8
+    release: nv
+    heritage: Helm
+spec:
+  type: NodePort
+  ports:
+    - port: 8443
+      name: manager
+      protocol: TCP
+  selector:
+    app: neuvector-manager-pod
